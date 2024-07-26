@@ -108,9 +108,11 @@ export const signUp = async ({ password, ...userData }: SignUpParams) => {
 export async function getLoggedInUser() {
   try {
     const { account } = await createSessionClient();
+    // console.log("created session client")
     const result = await account.get();
 
     const user = await getUserInfo({ userId: result.$id})
+    // console.log("user is ",user.$id)
 
     return parseStringify(user);
   } catch (error) {
@@ -135,7 +137,7 @@ export const createLinkToken = async (user: User) => {
   try {
     const tokenParams = {
       user: {
-        client_user_id: user.$id
+        client_user_id: user?.$id
       },
       client_name: `${user.firstName} ${user.lastName}`,
       products: ['auth'] as Products[],
